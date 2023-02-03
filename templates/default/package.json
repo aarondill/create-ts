@@ -1,0 +1,28 @@
+{
+	"name": "{{kebab name}}",
+	"version": "0.0.0",
+	"description": "{{description}}",
+	"license": "{{license}}",
+	"author": "{{contact}}",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"prebuild": "npm run lint && npm run clean",
+		"build": "tsc --build",
+		"clean": "rimraf ./dist",
+		"prelint": "npm run sort-package",
+		"lint": "eslint . --fix --ext .js,.ts,.mjs,.mts,.cjs,.cts,.tsx,.jsx",
+		"release": "release-it",
+		"sort-package": "sort-package-json",
+		"prewatch": "npm run clean",
+		"watch": "tsc --watch"
+	},
+	"dependencies": {},
+	"devDependencies": {},
+	"publishConfig": {
+		"access": "public"
+	}
+}
