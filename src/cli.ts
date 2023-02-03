@@ -11,6 +11,7 @@ const caveat = `Happy Coding!`;
 
 create("create-ts", {
 	templateRoot,
+	defaultPackageManager: "npm",
 	extra: {
 		useJest: {
 			type: "confirm",
