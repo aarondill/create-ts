@@ -11,7 +11,7 @@
 	],
 	"scripts": {
 		"build": "tsup src/cli.ts --minify",
-		"clean": "shx rm -rf lib",
+		"clean": "rimraf lib",
 		"dev": "tsup src/cli.ts --watch",
 		"prepublishOnly": "npm run clean && npm run build"
 	},
