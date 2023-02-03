@@ -4,8 +4,8 @@
 	"description": "Create a TypeScript package in one command",
 	"license": "MIT",
 	"author": "aarondill <aaronsacks2006@gmail.com>",
-	"bin": "dist/cli.js",
 	"type": "module",
+	"bin": "dist/cli.js",
 	"files": [
 		"dist",
 		"templates"
@@ -17,7 +17,7 @@
 		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"dependencies": {
-		"create-create-app": "^7.3.0",
+		"create-create-app": "github:aarondill/create-create-app#prepare",
 		"globby": "^13.1.3"
 	},
 	"devDependencies": {

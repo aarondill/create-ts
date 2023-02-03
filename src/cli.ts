@@ -3,16 +3,16 @@
 import { create } from "create-create-app";
 import fs from "fs/promises";
 import { globby } from "globby";
-import { resolve } from "path";
+import { fileURLToPath } from "url";
 
-const templateRoot = resolve(__dirname, "..", "templates");
+const templateRoot = new URL("../templates", import.meta.url);
 
 const caveat = `Happy Coding!`;
 
 // See https://github.com/uetchy/create-create-app/blob/master/README.md for other options.
 
 create("create-ts", {
-	templateRoot: templateRoot,
+	templateRoot: fileURLToPath(templateRoot),
 	promptForTemplate: true,
 	promptForPackageManager: true,
 	defaultPackageManager: "npm",
