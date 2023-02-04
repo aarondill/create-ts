@@ -99,7 +99,7 @@ const after: Options["after"] = async ({
 const hasGithubCLIinstalled = hasbin.sync("gh");
 const createGithubQuestion: Option = {
 	githubVisibility: {
-		prompt: "always",
+		prompt: "if-no-arg",
 		type: "list",
 		choices: ["Public", "Private", "Internal", "None"],
 		describe: "Create a repo interactively using GH?",
@@ -109,18 +109,17 @@ const createGithubQuestion: Option = {
 create("create-ts", {
 	templateRoot: fileURLToPath(templateRoot),
 	promptForTemplate: true,
-	promptForPackageManager: true,
 	extra: {
 		useJest: {
 			type: "confirm",
 			describe: "Use Jest for testing?",
-			prompt: "always",
+			prompt: "if-no-arg",
 		},
 		eslintRoot: {
 			type: "confirm",
 			describe:
 				"Use included eslint config as root? (not using it could cause problems)",
-			prompt: "always",
+			prompt: "if-no-arg",
 		},
 		// GH Repo if installed
 		...(hasGithubCLIinstalled ? createGithubQuestion : {}),
