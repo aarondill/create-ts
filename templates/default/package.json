@@ -24,9 +24,10 @@
 		"prewatch": "npm run lint && npm run clean",
 		"watch": "tsc --watch"
 	},
-	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "^18.11.18",
+		"@typescript-eslint/eslint-plugin": "^5.50.0",
+		"@typescript-eslint/parser": "^5.50.0",
 		"eslint": "^8.33.0",
 		"prettier": "^2.8.3",
 		"release-it": "^15.6.0",
