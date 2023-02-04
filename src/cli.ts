@@ -5,6 +5,7 @@ import fs from "fs/promises";
 import { globby } from "globby";
 import { resolve } from "path";
 import sortPackageJson from "sort-package-json";
+import { dedent } from "ts-dedent";
 import type { PackageJson } from "type-fest";
 import { fileURLToPath } from "url";
 
@@ -71,9 +72,8 @@ create("create-ts", {
 		await fs.writeFile("package.json", packageJsonString);
 	},
 
-	caveat: ({ answers }) => `
-	Created ${answers.name}
-
+	caveat: ({ answers }) => dedent`
+	Created ${answers.name} in CWD
 	${answers.useJest ? "Run `npm test` to run jest" : ""}
 	Run \`npm run lint\` to run eslint
 	Run \`npm run build\` to compile to JS
