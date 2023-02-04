@@ -54,7 +54,9 @@ const after: Options["after"] = async ({
 		packageJson.scripts.test = "jest";
 	} else {
 		// Don't want jest
-		const files = await globby(["jest.config", "jest.config.*"]);
+		const files = await globby(["jest.config", "jest.config.*"], {
+			cwd: packageDir,
+		});
 		for (const file of files) await fs.rm(file);
 		fs.rm("tests", { recursive: true });
 	}
