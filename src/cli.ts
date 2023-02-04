@@ -3,6 +3,7 @@
 import type { Option, Options } from "create-create-app";
 import type { PackageJson } from "type-fest";
 // Built-ins
+import assert from "assert";
 import fs from "fs/promises";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
@@ -79,13 +80,19 @@ const after: Options["after"] = async ({
 	if (shouldCreateGHRepo) {
 		const repoVisibility = githubVisibility.toLowerCase();
 		const { name } = answers;
-		await run(
-			`gh repo create "${name}" --${repoVisibility} -r origin -s . --push`,
-			{
+		try {
+			await run(`gh repo create "${name}" --${repoVisibility} -r origin -s .`, {
 				// Allows interactive mode
 				stdio: "inherit",
-			}
-		);
+			});
+		} catch (e) {
+			if (!(e instanceof Error)) e = Error(String(e));
+			assert(e instanceof Error);
+			console.error(
+				"Oh No! Something went wrong creating your github repository!\n" +
+					e.message
+			);
+		}
 	}
 };
 
