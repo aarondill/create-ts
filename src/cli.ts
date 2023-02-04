@@ -25,12 +25,13 @@ create("create-ts", {
 		},
 		eslintRoot: {
 			type: "confirm",
-			describe: "Use included eslint config as root?",
+			describe:
+				"Use included eslint config as root? (not using it could cause problems)",
 			prompt: "always",
 		},
 		// GH Repo??
 	},
-	after: async ({ answers, installNpmPackage, run, packageDir }) => {
+	after: async ({ answers, installNpmPackage, packageDir }) => {
 		console.log(packageDir);
 		// Get the original package.json content
 		const originalPackageJsonString = await fs.readFile(
@@ -41,13 +42,19 @@ create("create-ts", {
 
 		packageJson.scripts ??= {};
 
-		console.log(answers);
 		if (!answers.eslintRoot) {
-			// Change the eslint thingy here
-			//! bash code:
-			/* 			# User doesn't want as root
-	# Replace first root: true with root: false for first instance
-	sed -si'' '0,/root: true,/s//root: false,/' .eslintrc.* */
+			// Replace `root: true` with false in all eslintrc files
+			const files = await globby(".eslintrc.*", { cwd: packageDir });
+			for (const file of files) {
+				const eslintrcString = await fs.readFile(file, "utf-8");
+				const rootTrueRegex = /^(\s*)("?)root(\2):\s*true(,?\s*)$/;
+				// Only replace first one, is prob the only one
+				const rootFalseString = eslintrcString.replace(
+					rootTrueRegex,
+					"$1root: false$3"
+				);
+				await fs.writeFile(file, rootFalseString, "utf-8");
+			}
 		}
 		if (answers.useJest) {
 			// Wants to use Jest
@@ -75,7 +82,7 @@ create("create-ts", {
 	caveat: ({ answers }) => dedent`
 	Created ${answers.name} in CWD
 	${answers.useJest ? "Run `npm test` to run jest" : ""}
-	Run \`npm run lint\` to run eslint
+	Run \`npm run lint\` to run eslint and prettier
 	Run \`npm run build\` to compile to JS
 	Run \`npm run watch\` to compile whenever changes are made
 	Run \`npm run release\` or \`npx release-it\` to publish and release a new version
