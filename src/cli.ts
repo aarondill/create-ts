@@ -31,7 +31,7 @@ create("create-ts", {
 		},
 		// GH Repo??
 	},
-	after: async ({ answers, installNpmPackage, packageDir }) => {
+	after: async ({ answers, installNpmPackage, packageDir, run }) => {
 		console.log(packageDir);
 		// Get the original package.json content
 		const originalPackageJsonString = await fs.readFile(
@@ -77,6 +77,7 @@ create("create-ts", {
 		const packageJsonString = JSON.stringify(sortedPackageJson, null, "\t");
 		// Write the package.json
 		await fs.writeFile("package.json", packageJsonString);
+		await run("npm update --save");
 	},
 
 	caveat: ({ answers }) => dedent`
@@ -86,5 +87,6 @@ create("create-ts", {
 	Run \`npm run build\` to compile to JS
 	Run \`npm run watch\` to compile whenever changes are made
 	Run \`npm run release\` or \`npx release-it\` to publish and release a new version
+
 	`,
 });
