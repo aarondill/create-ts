@@ -1,6 +1,6 @@
 {
 	"name": "@aarond309/create-ts",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"description": "Create a TypeScript package in one command",
 	"license": "MIT",
 	"author": "aarondill <aaronsacks2006@gmail.com>",
