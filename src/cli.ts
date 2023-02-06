@@ -48,7 +48,7 @@ const after: Options["after"] = async ({
 	}
 	if (answers.useJest) {
 		// Wants to use Jest
-		console.log("Installing jest");
+		console.log("\nInstalling jest");
 		// Typescript needs these.
 		await installNpmPackage(["jest", "@types/jest", "ts-jest"], true);
 
@@ -80,6 +80,7 @@ const after: Options["after"] = async ({
 	if (shouldCreateGHRepo) {
 		const repoVisibility = githubVisibility.toLowerCase();
 		const { name } = answers;
+		console.log("\nCreating a new github repository");
 		try {
 			await run(`gh repo create "${name}" --${repoVisibility} -r origin -s .`, {
 				// Allows interactive mode
@@ -102,7 +103,7 @@ const createGithubQuestion: Option = {
 		prompt: "if-no-arg",
 		type: "list",
 		choices: ["Public", "Private", "Internal", "None"],
-		describe: "Create a repo interactively using GH?",
+		describe: "Create a repo using GH?",
 	},
 };
 
@@ -127,12 +128,11 @@ create("create-ts", {
 	after,
 
 	caveat: ({ answers }) => dedent`
-	Created ${answers.name} in CWD
+	
 	${answers.useJest ? "Run `npm test` to run jest" : ""}
 	Run \`npm run lint\` to run eslint and prettier
 	Run \`npm run build\` to compile to JS
 	Run \`npm run watch\` to compile whenever changes are made
 	Run \`npm run release\` or \`npx release-it\` to publish and release a new version
-
 	`,
 });
