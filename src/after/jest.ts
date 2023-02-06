@@ -29,5 +29,5 @@ async function removeJest({
 		cwd: packageDir,
 	});
 	for (const file of files) await fs.rm(file);
-	fs.rm("tests", { recursive: true });
+	await fs.rm("tests", { recursive: true });
 }

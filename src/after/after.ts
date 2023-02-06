@@ -27,10 +27,10 @@ const after: Options["after"] = async ({
 
 	packageJson.scripts ??= {};
 
-	if (!answers.eslintRoot) setEslintRootFalse({ packageDir });
+	if (!answers.eslintRoot) await setEslintRootFalse({ packageDir });
 
-	if (answers.useJest) initJest({ packageJson, installNpmPackage });
-	else removeJest({ packageDir });
+	if (answers.useJest) await initJest({ packageJson, installNpmPackage });
+	else await removeJest({ packageDir });
 
 	// Sort the package.json
 	const sortedPackageJson = sortPackageJson(packageJson);
@@ -41,5 +41,5 @@ const after: Options["after"] = async ({
 	await fs.writeFile("package.json", packageJsonString);
 	await run("npm update --save");
 
-	createGithubRepo({ answers, run });
+	await createGithubRepo({ answers, run });
 };

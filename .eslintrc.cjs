@@ -6,6 +6,7 @@ module.exports = {
 		ecmaVersion: "latest",
 		sourceType: "module",
 		impliedStrict: true,
+		project: "./tsconfig.eslint.json",
 	},
 	env: {
 		browser: true,
@@ -14,6 +15,7 @@ module.exports = {
 	plugins: ["@typescript-eslint"],
 
 	rules: {
+		"@typescript-eslint/no-floating-promises": "warn",
 		"@typescript-eslint/naming-convention": [
 			"warn",
 			{

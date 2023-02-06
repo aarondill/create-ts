@@ -20,7 +20,7 @@ function main(argv = process.argv.slice(2)) {
 		return;
 	}
 
-	create("create-ts", {
+	return create("create-ts", {
 		templateRoot: fileURLToPath(templateRoot),
 		promptForTemplate: true,
 		extra: {
@@ -41,4 +41,4 @@ function main(argv = process.argv.slice(2)) {
 	`,
 	});
 }
-main();
+await main();
