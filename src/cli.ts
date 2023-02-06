@@ -22,7 +22,6 @@ const after: Options["after"] = async ({
 	packageDir,
 	run,
 }) => {
-	console.log(packageDir);
 	// Get the original package.json content
 	const originalPackageJsonString = await fs.readFile(
 		resolve(packageDir, "package.json"),
