@@ -41,4 +41,5 @@ function main(argv = process.argv.slice(2)) {
 	`,
 	});
 }
-await main();
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+main();
