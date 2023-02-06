@@ -106,27 +106,38 @@ const createGithubQuestion: Option = {
 	},
 };
 
-create("create-ts", {
-	templateRoot: fileURLToPath(templateRoot),
-	promptForTemplate: true,
-	extra: {
-		useJest: {
-			type: "confirm",
-			describe: "Use Jest for testing?",
-			prompt: "if-no-arg",
-		},
-		eslintRoot: {
-			type: "confirm",
-			describe:
-				"Use included eslint config as root? (not using it could cause problems)",
-			prompt: "if-no-arg",
-		},
-		// GH Repo if installed
-		...(hasGithubCLIinstalled ? createGithubQuestion : {}),
-	},
-	after,
+function main(argv = process.argv.slice(2)) {
+	if (!argv[0]) {
+		// No first argument, or is empty
+		console.error(dedent`
+	usage: create-ts <name>
+	try create-ts --help for more information
+	`);
+		process.exitCode = 2;
+		return;
+	}
 
-	caveat: ({ answers }) => dedent`
+	create("create-ts", {
+		templateRoot: fileURLToPath(templateRoot),
+		promptForTemplate: true,
+		extra: {
+			useJest: {
+				type: "confirm",
+				describe: "Use Jest for testing?",
+				prompt: "if-no-arg",
+			},
+			eslintRoot: {
+				type: "confirm",
+				describe:
+					"Use included eslint config as root? (not using it could cause problems)",
+				prompt: "if-no-arg",
+			},
+			// GH Repo if installed
+			...(hasGithubCLIinstalled ? createGithubQuestion : {}),
+		},
+		after,
+
+		caveat: ({ answers }) => dedent`
 	
 	${answers.useJest ? "Run `npm test` to run jest" : ""}
 	Run \`npm run lint\` to run eslint and prettier
@@ -134,4 +145,6 @@ create("create-ts", {
 	Run \`npm run watch\` to compile whenever changes are made
 	Run \`npm run release\` or \`npx release-it\` to publish and release a new version
 	`,
-});
+	});
+}
+main();
