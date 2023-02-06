@@ -1,110 +1,15 @@
 #!/usr/bin/env node
-// Types
-import type { Option, Options } from "create-create-app";
-import type { PackageJson } from "type-fest";
 // Built-ins
-import assert from "assert";
-import fs from "fs/promises";
-import { resolve } from "path";
 import { fileURLToPath } from "url";
 // Dependencies
 import { create } from "create-create-app";
-import { globby } from "globby";
-import hasbin from "hasbin";
-import sortPackageJson from "sort-package-json";
 import { dedent } from "ts-dedent";
+// My code
+import { after } from "./after/index.js";
+import { githubQuestion, useJest } from "./questions/index.js";
 
 const templateRoot = new URL("../templates", import.meta.url);
-
-const after: Options["after"] = async ({
-	answers,
-	installNpmPackage,
-	packageDir,
-	run,
-}) => {
-	// Get the original package.json content
-	const originalPackageJsonString = await fs.readFile(
-		resolve(packageDir, "package.json"),
-		"utf-8"
-	);
-	const packageJson = JSON.parse(originalPackageJsonString) as PackageJson;
-
-	packageJson.scripts ??= {};
-
-	if (!answers.eslintRoot) {
-		// Replace `root: true` with false in all eslintrc files
-		const files = await globby(".eslintrc.*", { cwd: packageDir });
-		for (const file of files) {
-			const eslintrcString = await fs.readFile(file, "utf-8");
-			const rootTrueRegex = /^(\s*)("?)root(\2):\s*true(,?\s*)$/;
-			// Only replace first one, is prob the only one
-			const rootFalseString = eslintrcString.replace(
-				rootTrueRegex,
-				"$1root: false$3"
-			);
-			await fs.writeFile(file, rootFalseString, "utf-8");
-		}
-	}
-	if (answers.useJest) {
-		// Wants to use Jest
-		console.log("\nInstalling jest");
-		// Typescript needs these.
-		await installNpmPackage(["jest", "@types/jest", "ts-jest"], true);
-
-		packageJson.scripts.test = "jest";
-	} else {
-		// Don't want jest
-		const files = await globby(["jest.config", "jest.config.*"], {
-			cwd: packageDir,
-		});
-		for (const file of files) await fs.rm(file);
-		fs.rm("tests", { recursive: true });
-	}
-
-	// Sort the package.json
-	const sortedPackageJson = sortPackageJson(packageJson);
-
-	// Stringify, tab indented
-	const packageJsonString = JSON.stringify(sortedPackageJson, null, "\t");
-	// Write the package.json
-	await fs.writeFile("package.json", packageJsonString);
-	await run("npm update --save");
-
-	// Will be undefined if gh isn't installed
-	const { githubVisibility } = answers;
-	const shouldCreateGHRepo =
-		typeof githubVisibility === "string" &&
-		githubVisibility.toLowerCase() !== "none";
-
-	if (shouldCreateGHRepo) {
-		const repoVisibility = githubVisibility.toLowerCase();
-		const { name } = answers;
-		console.log("\nCreating a new github repository");
-		try {
-			await run(`gh repo create "${name}" --${repoVisibility} -r origin -s .`, {
-				// Allows interactive mode
-				stdio: "inherit",
-			});
-		} catch (e) {
-			if (!(e instanceof Error)) e = Error(String(e));
-			assert(e instanceof Error);
-			console.error(
-				"Oh No! Something went wrong creating your github repository!\n" +
-					e.message
-			);
-		}
-	}
-};
-
-const hasGithubCLIinstalled = hasbin.sync("gh");
-const createGithubQuestion: Option = {
-	githubVisibility: {
-		prompt: "if-no-arg",
-		type: "list",
-		choices: ["Public", "Private", "Internal", "None"],
-		describe: "Create a repo using GH?",
-	},
-};
+main();
 
 function main(argv = process.argv.slice(2)) {
 	if (!argv[0]) {
@@ -121,11 +26,7 @@ function main(argv = process.argv.slice(2)) {
 		templateRoot: fileURLToPath(templateRoot),
 		promptForTemplate: true,
 		extra: {
-			useJest: {
-				type: "confirm",
-				describe: "Use Jest for testing?",
-				prompt: "if-no-arg",
-			},
+			useJest,
 			eslintRoot: {
 				type: "confirm",
 				describe:
@@ -133,7 +34,7 @@ function main(argv = process.argv.slice(2)) {
 				prompt: "if-no-arg",
 			},
 			// GH Repo if installed
-			...(hasGithubCLIinstalled ? createGithubQuestion : {}),
+			...githubQuestion,
 		},
 		after,
 
@@ -147,4 +48,3 @@ function main(argv = process.argv.slice(2)) {
 	`,
 	});
 }
-main();

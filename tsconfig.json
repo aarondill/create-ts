@@ -10,7 +10,7 @@
 		"sourceMap": true,
 		"removeComments": true,
 		"esModuleInterop": true,
-		"moduleResolution": "node",
+		"moduleResolution": "nodenext",
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"resolveJsonModule": true,
