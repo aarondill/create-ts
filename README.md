@@ -1,36 +1,35 @@
 # Create Ts
 
-Create a TypeScript package in one command
+Create a new TypeScript project in one easy step! No more installing packages and setting up boilerplate just to write some code!
 
 > created by [create-create-app](https://github.com/uetchy/create-create-app).
 
 ## Usage
 
 ```bash
-npx create-ts <name>
+npm init @aarond309/create-ts <name>
+# OR
+npx @aarond309/create-ts <name>
 ```
 
-## Template string reference
+Simply answer the quick questions, let it install DevDependencies and enjoy!
 
-> Don't forget to remove this before publishing your package!
+## Features included:
 
-- {{name}} => create-ts
-- {{upper name}} => CREATE-TS
-- {{lower name}} => create-ts
-- {{capital name}} => CreateTs
-- {{capital name space=true}} => Create Ts
-- {{camel name}} => createTs
-- {{snake name}} => create_ts
-- {{kebab name}} => create-ts
-- {{space name}} => create ts
-- {{uuid}} => 7e62b18f-30cc-4a1d-94fb-5e41680009b3
-- {{upper (uuid)}} => A2EE9B9F-B87A-477C-A7E9-191A0A53E5ED
-- {{description}} => Create a TypeScript package in one command
-- {{author}} => aarondill
-- {{email}} => aaronsacks2006@gmail.com
-- {{contact}} => aarondill <aaronsacks2006@gmail.com>
-- {{license}} => MIT
-- {{year}} => 2023
-- {{custom}} =>  (undefined until it is defined in `extra` field in `create` function arguments)
+- Automatically create local git repo
+- Optionally create Github repository (**Requires `gh` CLI**)
+- Support for Jest, with built-in config
+- Config file for eslint with TypeScript (optional root property)
+- .gitignore with many popular files already listed. **Please Check Contents Before Committing!**
+- .vscodeignore for easy configuration if creating vscode extensions. Feel free to remove in other cases.
+- User-chosen License already included
+- .tsconfig with strict mode activated
+- Tsc outputs to ./dist from ./src
+- Package.json with useful scripts already created
+- File system setup with organized folders, along with index.ts and index.test.ts files
+- Release-it included to allow easy releasing, with config file included. Run `npm run release` in your new project to create a release.
+- No (regular) dependencies will be added to your project
 
-See https://github.com/uetchy/create-create-app#template for the further details.
+## Notes:
+
+- To allow Release-it to automatically create Github Releases, instead of _just_ tags, set the environment variable `RELEASE_IT_GITHUB_TOKEN` to a Github Token with proper authentication. [See more here](<https://github.com/release-it/release-it/blob/master/docs/github-releases.md#automated:~:text=Obtain%20a%20personal%20access%20token%20(release%2Dit%20only%20needs%20%22repo%22%20access%3B%20no%20%22admin%22%20or%20other%20scopes).>). Without this token, Release-it will fallback to a web browser with defaults filled in.
