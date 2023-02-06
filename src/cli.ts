@@ -8,10 +8,8 @@ import { dedent } from "ts-dedent";
 import { after } from "./after/index.js";
 import { githubQuestion, useJest } from "./questions/index.js";
 
-const templateRoot = new URL("../templates", import.meta.url);
-main();
-
 function main(argv = process.argv.slice(2)) {
+	const templateRoot = new URL("../templates", import.meta.url);
 	if (!argv[0]) {
 		// No first argument, or is empty
 		console.error(dedent`
@@ -48,3 +46,4 @@ function main(argv = process.argv.slice(2)) {
 	`,
 	});
 }
+main();
