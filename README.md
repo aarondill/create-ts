@@ -9,7 +9,7 @@ Create a new TypeScript project in one easy step! No more installing packages an
 ```bash
 npm init @aarond309/create-ts <name>
 # OR
-npx @aarond309/create-ts <name>
+npx @aarond309/ts <name>
 ```
 
 Simply answer the quick questions, let it install DevDependencies and enjoy!

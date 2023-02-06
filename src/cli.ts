@@ -6,7 +6,7 @@ import { create } from "create-create-app";
 import { dedent } from "ts-dedent";
 // My code
 import { after } from "./after/index.js";
-import { githubQuestion, useJest } from "./questions/index.js";
+import { eslintRoot, githubQuestion, useJest } from "./questions/index.js";
 
 function main(argv = process.argv.slice(2)) {
 	const templateRoot = new URL("../templates", import.meta.url);
@@ -25,12 +25,7 @@ function main(argv = process.argv.slice(2)) {
 		promptForTemplate: true,
 		extra: {
 			useJest,
-			eslintRoot: {
-				type: "confirm",
-				describe:
-					"Use included eslint config as root? (not using it could cause problems)",
-				prompt: "if-no-arg",
-			},
+			eslintRoot,
 			// GH Repo if installed
 			...githubQuestion,
 		},
