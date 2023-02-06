@@ -6,9 +6,9 @@ import type { PackageJson } from "type-fest";
 import fs from "fs/promises";
 import { resolve } from "path";
 // Dependencies
-import { globby } from "globby";
 import sortPackageJson from "sort-package-json";
 // My code
+import { setEslintRootFalse } from "./eslint.js";
 import { createGithubRepo } from "./github.js";
 import { initJest, removeJest } from "./jest.js";
 
@@ -27,20 +27,8 @@ const after: Options["after"] = async ({
 
 	packageJson.scripts ??= {};
 
-	if (!answers.eslintRoot) {
-		// Replace `root: true` with false in all eslintrc files
-		const files = await globby(".eslintrc.*", { cwd: packageDir });
-		for (const file of files) {
-			const eslintrcString = await fs.readFile(file, "utf-8");
-			const rootTrueRegex = /^(\s*)("?)root(\2):\s*true(,?\s*)$/;
-			// Only replace first one, is prob the only one
-			const rootFalseString = eslintrcString.replace(
-				rootTrueRegex,
-				"$1root: false$3"
-			);
-			await fs.writeFile(file, rootFalseString, "utf-8");
-		}
-	}
+	if (!answers.eslintRoot) setEslintRootFalse({ packageDir });
+
 	if (answers.useJest) initJest({ packageJson, installNpmPackage });
 	else removeJest({ packageDir });
 
