@@ -16,7 +16,6 @@
 		"clean": "rimraf ./dist",
 		"dev": "npm run clean && tsc --watch",
 		"eslint": "eslint . --fix --ext .js,.ts,.mjs,.mts,.cjs,.cts,.tsx,.jsx",
-		"prelint": "npm run clean",
 		"lint": "npm run eslint && npm run prettier && npm run sort-package",
 		"prepublishOnly": "npm run clean && npm run build",
 		"prettier": "prettier . --write",
