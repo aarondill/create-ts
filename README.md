@@ -29,6 +29,8 @@ Simply answer the quick questions, let it install DevDependencies and enjoy!
 - File system setup with organized folders, along with index.ts and index.test.ts files
 - Release-it included to allow easy releasing, with config file included. Run `npm run release` in your new project to create a release.
 - No (regular) dependencies will be added to your project
+- Support for many package managers by using `yarpm`
+- Cross-platform support with windows
 
 ## Notes:
 
