@@ -10,18 +10,17 @@
 		"dist"
 	],
 	"scripts": {
-		"prebuild": "npm run lint && npm run clean",
-		"build": "tsc --build",
-		"clean": "rimraf ./dist",
+		"build": "yarpm run lint && yarpm run clean && tsc --build",
+		"clean": "rimraf dist",
+		"dev": "yarpm run clean && tsc --watch",
 		"eslint": "eslint . --fix --ext .js,.ts,.mjs,.mts,.cjs,.cts,.tsx,.jsx",
-		"lint": "npm run eslint && npm run prettier && npm run sort-package",
-		"prettier": "prettier . --write",
+		"lint": "yarpm run eslint && yarpm run prettier && yarpm run sort-package",
+		"prepublishOnly": "yarpm run clean && yarpm run build",
+		"prettier": "prettier . --write --loglevel warn",
 		"release": "release-it",
 		"sort-package": "sort-package-json",
-		"pretest": "npm run lint",
-		"test": "echo \"No test specified\" && exit 1",
-		"prewatch": "npm run lint && npm run clean",
-		"watch": "tsc --watch"
+		"test": "yarpm run lint && echo \"No test specified\" && exit 1",
+		"watch": "yarpm run lint && yarpm run clean && tsc --watch"
 	},
 	"devDependencies": {
 		"@types/node": "^18.11.18",
@@ -32,7 +31,8 @@
 		"release-it": "^15.6.0",
 		"rimraf": "^4.1.2",
 		"sort-package-json": "^2.4.0",
-		"typescript": "^4.9.5"
+		"typescript": "^4.9.5",
+		"yarpm": "^1.2.0"
 	},
 	"publishConfig": {
 		"access": "public"
