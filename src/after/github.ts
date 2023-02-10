@@ -11,13 +11,15 @@ async function createGithubRepo({
 	answers: { githubVisibility, name },
 	packageDir,
 }: Pick<AfterHookOptions, "answers" | "packageDir">) {
+	if (!githubVisibility) return; // GH isn't installed
+	const options = ["Public", "Private", "Internal", "None"];
 	if (
-		githubVisibility !== "Public" &&
-		githubVisibility !== "Private" &&
-		githubVisibility !== "Internal" &&
-		githubVisibility !== "None"
+		typeof githubVisibility !== "string" ||
+		!options.includes(githubVisibility)
 	) {
-		throw new TypeError("Something went wrong with githubVisibility");
+		throw new TypeError("Something went wrong with githubVisibility", {
+			cause: { githubVisibility },
+		});
 	}
 
 	const shouldCreateGHRepo = githubVisibility.toLowerCase() !== "none";
