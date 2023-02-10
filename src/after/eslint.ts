@@ -19,7 +19,6 @@ async function setEslintRootFalse({
 			rootTrueRegex,
 			"$1$2root$3: false$4"
 		);
-		console.log(rootFalseString.includes("root: false"));
 		await fs.writeFile(file, rootFalseString, "utf-8");
 	}
 }
