@@ -1,13 +1,16 @@
 export { createGithubRepo };
 
 // Types
-import assert from "assert";
 import type { AfterHookOptions } from "create-create-app";
+// Built-ins
+import assert from "assert";
+// Dependencies
+import { execa } from "execa";
 
 async function createGithubRepo({
 	answers: { githubVisibility, name },
-	run,
-}: Pick<AfterHookOptions, "answers" | "run">) {
+	packageDir,
+}: Pick<AfterHookOptions, "answers" | "packageDir">) {
 	if (
 		githubVisibility !== "Public" &&
 		githubVisibility !== "Private" &&
@@ -23,10 +26,18 @@ async function createGithubRepo({
 	const repoVisibility = githubVisibility.toLowerCase();
 	console.log("\nCreating a new github repository");
 	try {
-		await run(`gh repo create "${name}" --${repoVisibility} -r origin -s .`, {
-			// Allows interactive mode
-			stdio: "inherit",
-		});
+		await execa(
+			"gh",
+			[
+				...`repo create --${repoVisibility}`.split(" "),
+				...`--remote=origin --source=. --`.split(" "),
+				`${name}`,
+			],
+			{
+				stdio: "inherit",
+				cwd: packageDir,
+			}
+		);
 	} catch (e) {
 		if (!(e instanceof Error)) e = Error(String(e));
 		assert(e instanceof Error);

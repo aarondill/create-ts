@@ -23,6 +23,8 @@ function main(argv = process.argv.slice(2)) {
 	return create("create-ts", {
 		templateRoot: fileURLToPath(templateRoot),
 		promptForTemplate: true,
+		promptForPackageManager: true,
+		defaultPackageManager: "pnpm",
 		extra: {
 			useJest,
 			eslintRoot,
@@ -30,14 +32,14 @@ function main(argv = process.argv.slice(2)) {
 			...githubQuestion,
 		},
 		after,
-
-		caveat: ({ answers }) => dedent`
-	
-	${answers.useJest ? "Run `npm test` to run jest" : ""}
-	Run \`npm run lint\` to run eslint and prettier
-	Run \`npm run build\` to compile to JS
-	Run \`npm run watch\` to compile whenever changes are made
-	Run \`npm run release\` or \`npx release-it\` to publish and release a new version
+		skipNpmInstall: true,
+		caveat: ({ answers, packageManager }) => dedent`
+		
+	${answers.useJest ? `Run \`${packageManager} test\` to run jest` : ""}
+	Run \`${packageManager} run lint\` to run eslint and prettier
+	Run \`${packageManager} run build\` to compile to JS
+	Run \`${packageManager} run watch\` to compile whenever changes are made
+	Run \`${packageManager} run release\` or \`npx release-it\` to publish and release a new version
 	`,
 	});
 }

@@ -24,7 +24,8 @@
 		"watch": "yarpm run lint && yarpm run clean && tsc --watch"
 	},
 	"dependencies": {
-		"create-create-app": "github:aarondill/create-create-app",
+		"create-create-app": "https://github.com/aarondill/create-create-app.git",
+		"execa": "^6.1.0",
 		"globby": "^13.1.3",
 		"hasbin": "^1.2.3",
 		"sort-package-json": "^2.4.0",

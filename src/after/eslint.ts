@@ -10,7 +10,11 @@ async function setEslintRootFalse({
 	packageDir,
 }: Pick<AfterHookOptions, "packageDir">) {
 	// Replace `root: true` with false in all eslintrc files
-	const files = await globby(".eslintrc.*", { cwd: packageDir, dot: true });
+	const files = await globby(".eslintrc.*", {
+		cwd: packageDir,
+		dot: true,
+		absolute: true,
+	});
 	for (const file of files) {
 		const eslintrcString = await fs.readFile(file, "utf-8");
 		const rootTrueRegex = /^(\s*)("?)root(\2):\s*true(,?\s*)$/m;
