@@ -2,14 +2,36 @@
 // Built-ins
 import { fileURLToPath } from "url";
 // Dependencies
-import { create } from "create-create-app";
+import { AfterHookOptions, create } from "create-create-app";
 import { dedent } from "ts-dedent";
 // My code
+import hasbin from "hasbin";
+import { basename } from "path";
 import { after } from "./after/index.js";
 import { eslintRoot, githubQuestion, useJest } from "./questions/index.js";
 
-function main(argv = process.argv.slice(2)) {
+function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
+	// get name from executable: /usr/local/bin/npm --> npm
+	const defaultPackageManager =
+		basename(process.env._ ?? "") || "not in the list";
+
+	// If called through a package manager
+	if (["pnpm", "npm", "yarn"].includes(defaultPackageManager))
+		return defaultPackageManager as "pnpm" | "npm" | "yarn";
+
+	// Called through node or nodejs
+	if (defaultPackageManager === "node" || defaultPackageManager === "nodejs") {
+		if (hasbin.sync("pnpm")) return "pnpm";
+		else if (hasbin.sync("yarn")) return "yarn";
+		else return "npm";
+	}
+	// called another way, it's `create`'s problem now.
+	return undefined;
+}
+
+async function main(argv = process.argv.slice(2)): Promise<void> {
 	const templateRoot = new URL("../templates", import.meta.url);
+
 	if (!argv[0]) {
 		// No first argument, or is empty
 		console.error(dedent`
@@ -20,11 +42,11 @@ function main(argv = process.argv.slice(2)) {
 		return;
 	}
 
-	return create("create-ts", {
+	await create("create-ts", {
 		templateRoot: fileURLToPath(templateRoot),
 		promptForTemplate: true,
 		promptForPackageManager: true,
-		defaultPackageManager: "pnpm",
+		defaultPackageManager: getDefaultPackageManager(),
 		extra: {
 			useJest,
 			eslintRoot,
@@ -33,7 +55,7 @@ function main(argv = process.argv.slice(2)) {
 		},
 		after,
 		skipNpmInstall: true,
-		caveat: ({ answers, packageManager }) => dedent`
+		caveat: ({ answers, packageManager }: AfterHookOptions) => dedent`
 		
 	${answers.useJest ? `Run \`${packageManager} test\` to run jest` : ""}
 	Run \`${packageManager} run lint\` to run eslint and prettier
