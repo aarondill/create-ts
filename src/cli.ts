@@ -8,7 +8,7 @@ import { dedent } from "ts-dedent";
 import hasbin from "hasbin";
 import { basename } from "path";
 import { after } from "./after/index.js";
-import { eslintRoot, githubQuestion, useJest } from "./questions/index.js";
+import { eslintRoot, githubQuestion } from "./questions/index.js";
 
 function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
 	// get name from executable: /usr/local/bin/npm --> npm
@@ -45,10 +45,10 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 	await create("create-ts", {
 		templateRoot: fileURLToPath(templateRoot),
 		promptForTemplate: true,
+		defaultTemplate: "without-jest",
 		promptForPackageManager: true,
 		defaultPackageManager: getDefaultPackageManager(),
 		extra: {
-			useJest,
 			eslintRoot,
 			// GH Repo if installed
 			...githubQuestion,
@@ -57,7 +57,11 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 		skipNpmInstall: true,
 		caveat: ({ answers, packageManager }: AfterHookOptions) => dedent`
 		
-	${answers.useJest ? `Run \`${packageManager} test\` to run jest` : ""}
+	${
+		answers.template === "jest"
+			? `Run \`${packageManager} test\` to run jest`
+			: ""
+	}
 	Run \`${packageManager} run lint\` to run eslint and prettier
 	Run \`${packageManager} run build\` to compile to JS
 	Run \`${packageManager} run watch\` to compile whenever changes are made

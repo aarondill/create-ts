@@ -10,7 +10,6 @@ import sortPackageJson from "sort-package-json";
 // My code
 import { setEslintRootFalse } from "./eslint.js";
 import { createGithubRepo } from "./github.js";
-import { initJest, removeJest } from "./jest.js";
 
 const after: Options["after"] = async ({
 	answers,
@@ -27,9 +26,6 @@ const after: Options["after"] = async ({
 	packageJson.scripts ??= {};
 
 	if (!answers.eslintRoot) await setEslintRootFalse({ packageDir });
-
-	if (answers.useJest) await initJest({ packageJson, installNpmPackage });
-	else await removeJest({ packageDir });
 
 	// Sort the package.json
 	const sortedPackageJson = sortPackageJson(packageJson);

@@ -12,7 +12,30 @@ module.exports = {
 		browser: true,
 		node: true,
 	},
-	plugins: ["@typescript-eslint", "jest"],
+	plugins: ["@typescript-eslint"],
+	overrides: [
+		{
+			// Jest Stuff! only applies to files in tests folder
+			files: ["tests/**"],
+			plugins: ["jest"],
+			env: {
+				"jest/globals": true,
+			},
+			rules: {
+				"jest/valid-expect": "error",
+				"jest/valid-describe-callback": "error",
+				"jest/valid-expect-in-promise": "error",
+				"jest/valid-title": "warn",
+				"jest/consistent-test-it": "error",
+				// This is suggested, but throws errors for @aarondill/create-ts when compiling
+				// "jest/no-deprecated-functions": "error",
+				"jest/no-done-callback": "warn",
+				"jest/no-export": "warn",
+				"jest/no-identical-title": "warn",
+				"jest/no-standalone-expect": "error",
+			},
+		},
+	],
 	rules: {
 		"@typescript-eslint/no-floating-promises": "warn",
 		"@typescript-eslint/naming-convention": [
