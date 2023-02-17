@@ -111,7 +111,11 @@ async function moveChosenEslintrc({
 	answers,
 	packageDir,
 	packageJson,
-}: Readonly<Pick<AfterHookOptions, "answers" | "packageDir"> & { packageJson: PackageJson; }>) {
+}: Readonly<
+	Pick<AfterHookOptions, "answers" | "packageDir"> & {
+		packageJson: PackageJson;
+	}
+>) {
 	const { eslintOpinionated: chosenName } = answers;
 	if (typeof chosenName !== "string") {
 		throw new TypeError("Expected string, received " + typeof chosenName);
@@ -143,9 +147,8 @@ async function moveChosenEslintrc({
 	await fs.rename(chosenFile, destination);
 
 	if (chosenName === "opinionated") {
-		// Install eslint-plugin-functional and -compat. Version is put when installing
+		// Install eslint-plugin-functional. Version is put when installing
 		packageJson.devDependencies ??= {};
 		packageJson.devDependencies["eslint-plugin-functional"] = "*";
-		packageJson.devDependencies["eslint-plugin-compat"] = "*";
 	}
 }

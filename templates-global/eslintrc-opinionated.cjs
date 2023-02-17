@@ -298,11 +298,10 @@ const config = {
 		node: true,
 		browser: false,
 	},
-	plugins: ["@typescript-eslint", "compat", "functional"],
+	plugins: ["@typescript-eslint", "functional"],
 	extends: [
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
-		"plugin:compat/recommended",
 	],
 
 	//! This is a comment marker which will be removed during creation. (No comments allowed inside the array!)
