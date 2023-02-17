@@ -1,1 +1,9 @@
-../tsconfig.eslint.json
+{
+	"compilerOptions": {
+		"noEmit": true,
+		"allowJs": true
+	},
+	"extends": "./tsconfig.json",
+	"include": ["*", "**/*", ".*", "**/.*"],
+	"exclude": ["dist", "node_modules"]
+}
