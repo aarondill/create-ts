@@ -9,7 +9,8 @@
 	"bin": "dist/cli.js",
 	"files": [
 		"dist",
-		"templates"
+		"templates",
+		"templates-global"
 	],
 	"scripts": {
 		"build": "yarpm run lint && yarpm run tsc:build",
