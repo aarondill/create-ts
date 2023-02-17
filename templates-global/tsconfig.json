@@ -18,6 +18,6 @@
 		"noImplicitAny": true,
 		"skipLibCheck": true
 	},
-	"include": ["src"],
+	"include": ["src", "tsconfig.eslint.json"],
 	"exclude": ["dist"]
 }

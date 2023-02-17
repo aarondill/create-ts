@@ -8,16 +8,31 @@ import path from "path";
 // Dependencies
 import sortPackageJson from "sort-package-json";
 // My code
+import { copy } from "create-create-app";
 import { setEslintRootFalse } from "./eslint.js";
 import { createGithubRepo } from "./github.js";
-
 const after: Options["after"] = async ({
 	answers,
 	installNpmPackage,
 	packageDir,
 	run,
 	packageManager,
+	templateDir,
+	year,
 }) => {
+	// Copy the global template files
+	const globalTemplateDir = path.resolve(
+		templateDir,
+		"..",
+		"..",
+		"templates-global"
+	);
+	copy({
+		sourceDir: globalTemplateDir,
+		targetDir: packageDir,
+		view: { ...answers, year, packageManager },
+	});
+
 	// Get the original package.json content
 	const packageJsonPath = path.resolve(packageDir, "package.json");
 	const originalPackageJsonString = await fs.readFile(packageJsonPath, "utf-8");
