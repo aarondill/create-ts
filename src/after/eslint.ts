@@ -11,7 +11,7 @@ import fs from "fs/promises";
 // Dependencies
 import { globby } from "globby";
 import path from "path";
-import { PackageJson } from "type-fest";
+import type { PackageJson } from "type-fest";
 import { eslintSupportedNativeEnvironments } from "../questions/eslint.js";
 
 const whitespace = "[^\\S\\r\\n]";
@@ -21,7 +21,7 @@ const commentMarkerPattern = `(?:^|${whitespace})*\\/\\/${whitespace}*! This is 
 async function setEslintRoot({
 	packageDir,
 	answers,
-}: Pick<AfterHookOptions, "packageDir" | "answers">) {
+}: Readonly<Pick<AfterHookOptions, "packageDir" | "answers">>) {
 	// Replace `root: true` with false in eslintrc file
 	const file = path.resolve(packageDir, ".eslintrc.cjs");
 
@@ -45,7 +45,7 @@ async function setEslintRoot({
 async function setJestOverrideEslint({
 	packageDir,
 	answers: { template },
-}: Pick<AfterHookOptions, "packageDir" | "answers">) {
+}: Readonly<Pick<AfterHookOptions, "packageDir" | "answers">>) {
 	const commentAndOverridesMarker = new RegExp(
 		commentMarkerPattern +
 			`(\\s*)overrides:\\s*\\[((?:.|\\s)*)\\]${whitespace}*(,?${whitespace}*\\n?)`
@@ -74,7 +74,7 @@ async function setJestOverrideEslint({
 async function setEslintEnvironments({
 	answers,
 	packageDir,
-}: Pick<AfterHookOptions, "packageDir" | "answers">) {
+}: Readonly<Pick<AfterHookOptions, "packageDir" | "answers">>) {
 	// Replace Environments object with desired values
 	const commentAndEnv = new RegExp(
 		commentMarkerPattern +
@@ -111,9 +111,7 @@ async function moveChosenEslintrc({
 	answers,
 	packageDir,
 	packageJson,
-}: Pick<AfterHookOptions, "answers" | "packageDir"> & {
-	packageJson: PackageJson;
-}) {
+}: Readonly<Pick<AfterHookOptions, "answers" | "packageDir"> & { packageJson: PackageJson; }>) {
 	const { eslintOpinionated: chosenName } = answers;
 	if (typeof chosenName !== "string") {
 		throw new TypeError("Expected string, received " + typeof chosenName);

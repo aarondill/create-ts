@@ -13,11 +13,10 @@
 	"scripts": {
 		"build": "yarpm run lint && yarpm run tsc:build",
 		"clean": "rimraf dist",
-		"dev": "yarpm run tsc:watch",
 		"lint": "yarpm run lint:eslint && yarpm run lint:prettier && yarpm run sort-package",
 		"lint:eslint": "eslint . --fix --ext .js,.ts,.mjs,.mts,.cjs,.cts,.tsx,.jsx",
 		"lint:prettier": "prettier . --write --loglevel warn",
-		"prepublishOnly": "yarpm run clean && yarpm run build",
+		"prepublishOnly": "yarpm run build",
 		"release": "yarpm run lint && yarpm run release:release-it",
 		"release:release-it": "release-it",
 		"sort-package": "sort-package-json",
@@ -26,7 +25,7 @@
 		"test:typecheck": "tsc -p ./tsconfig.eslint.json --noEmit --skipLibCheck",
 		"tsc:build": "yarpm run clean && tsc --build",
 		"tsc:watch": "yarpm run clean && tsc --watch",
-		"watch": "yarpm run lint && yarpm run clean && yarpm run tsc:watch"
+		"watch": "yarpm run lint && yarpm run tsc:watch"
 	},
 	"devDependencies": {
 		"@types/node": "*",

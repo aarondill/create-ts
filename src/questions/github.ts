@@ -6,7 +6,7 @@ import type { Option } from "create-create-app";
 import hasbin from "hasbin";
 
 const hasGithubCLIinstalled = hasbin.sync("gh");
-const githubVisibility: Option["githubVisibility"] = {
+const githubVisibility: Readonly<Option["githubVisibility"]> = {
 	prompt: hasGithubCLIinstalled ? "if-empty" : "never",
 	type: "list",
 	choices: ["Public", "Private", "Internal", "None"],

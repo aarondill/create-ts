@@ -5,16 +5,16 @@ export {
 	eslintSupportedNativeEnvironments,
 };
 
-import { Option } from "create-create-app";
+import type { Option } from "create-create-app";
 
-const eslintRoot: Option["eslintRoot"] = {
+const eslintRoot: Readonly<Option["eslintRoot"]> = {
 	type: "confirm",
 	describe: "Use eslint config as root?",
 	prompt: "if-no-arg",
 	default: true,
 } as const;
 
-const eslintOpinionated: Option["eslintOpinionated"] = {
+const eslintOpinionated: Readonly<Option["eslintOpinionated"]> = {
 	type: "list" as const,
 	describe: "Use a (heavily) opinionated eslint configuration?" as const,
 	choices: ["opinionated", "base"] as ["opinionated", "base"],
@@ -57,7 +57,7 @@ const eslintSupportedNativeEnvironments = [
 	"greasemonkey",
 ];
 
-const eslintEnvironments: Option["eslintEnvironments"] = {
+const eslintEnvironments: Readonly<Option["eslintEnvironments"]> = {
 	describe: "which environments would you like ESLint to lint for?",
 	type: "checkbox",
 	choices: eslintSupportedNativeEnvironments,

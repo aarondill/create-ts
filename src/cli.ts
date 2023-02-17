@@ -2,7 +2,8 @@
 // Built-ins
 import { fileURLToPath } from "url";
 // Dependencies
-import { AfterHookOptions, create } from "create-create-app";
+import type { AfterHookOptions} from "create-create-app";
+import { create } from "create-create-app";
 import { dedent } from "ts-dedent";
 // My code
 import hasbin from "hasbin";
@@ -28,7 +29,7 @@ function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
 	if (defaultPackageManager === "node" || defaultPackageManager === "nodejs") {
 		if (hasbin.sync("pnpm")) return "pnpm";
 		else if (hasbin.sync("yarn")) return "yarn";
-		else return "npm";
+		return "npm";
 	}
 	// called another way, it's `create`'s problem now.
 	return undefined;
@@ -62,7 +63,7 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 		},
 		after,
 		skipNpmInstall: true,
-		caveat: ({ answers, packageManager }: AfterHookOptions) => dedent`
+		caveat: ({ answers, packageManager }: Readonly<AfterHookOptions>) => dedent`
 		
 	${
 		answers.template === "jest"

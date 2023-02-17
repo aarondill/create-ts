@@ -10,7 +10,7 @@ import { execa } from "execa";
 async function createGithubRepo({
 	answers: { githubVisibility, name },
 	packageDir,
-}: Pick<AfterHookOptions, "answers" | "packageDir">) {
+}: Readonly<Pick<AfterHookOptions, "answers" | "packageDir">>) {
 	if (!githubVisibility) return; // GH isn't installed
 	const options = ["Public", "Private", "Internal", "None"];
 	if (
