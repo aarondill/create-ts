@@ -1,4 +1,9 @@
-export { eslintRoot, eslintOpinionated };
+export {
+	eslintRoot,
+	eslintOpinionated,
+	eslintEnvironments,
+	eslintSupportedNativeEnvironments,
+};
 
 import { Option } from "create-create-app";
 
@@ -14,5 +19,48 @@ const eslintOpinionated: Option["eslintOpinionated"] = {
 	describe: "Use a (heavily) opinionated eslint configuration?" as const,
 	choices: ["opinionated", "base"] as ["opinionated", "base"],
 	default: "opinionated" as const,
+	prompt: "if-no-arg",
+};
+
+const eslintSupportedNativeEnvironments = [
+	"browser",
+	"node",
+	"commonjs",
+	"shared-node-browser",
+	"es6",
+	"es2016",
+	"es2017",
+	"es2018",
+	"es2019",
+	"es2020",
+	"es2021",
+	"es2022",
+	"worker",
+	"amd",
+	"mocha",
+	"jasmine",
+	"jest",
+	"phantomjs",
+	"protractor",
+	"qunit",
+	"jquery",
+	"prototypejs",
+	"shelljs",
+	"meteor",
+	"mongo",
+	"applescript",
+	"nashorn",
+	"serviceworker",
+	"atomtest",
+	"embertest",
+	"webextensions",
+	"greasemonkey",
+];
+
+const eslintEnvironments: Option["eslintEnvironments"] = {
+	describe: "which environments would you like ESLint to lint for?",
+	type: "checkbox",
+	choices: eslintSupportedNativeEnvironments,
+	default: ["node"],
 	prompt: "if-no-arg",
 };

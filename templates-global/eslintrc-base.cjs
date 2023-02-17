@@ -5,7 +5,7 @@
 /** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Linter.d").Linter.ConfigOverride} ConfigOverride */
 
 /** @type {boolean} */
-//! This is a comment marker which will be removed during creation.
+//! This is a comment marker which will be removed during creation. (This must be constant. Don't change the name!)
 const isRoot = true;
 
 /** @type EslintIgnorePatterns */
@@ -94,6 +94,7 @@ const config = {
 		impliedStrict: true,
 		project: "./tsconfig.eslint.json",
 	},
+	//! This is a comment marker which will be removed during creation. (No variables inside this object!)
 	env: {
 		node: true,
 		browser: false,
@@ -101,7 +102,7 @@ const config = {
 	plugins: ["@typescript-eslint"],
 	extends: ["plugin:@typescript-eslint/eslint-recommended"],
 
-	//! This is a comment marker which will be removed during creation.
+	//! This is a comment marker which will be removed during creation. (No comments allowed inside the array!)
 	overrides: [],
 
 	rules: {

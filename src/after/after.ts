@@ -11,7 +11,8 @@ import sortPackageJson from "sort-package-json";
 import { copy } from "create-create-app";
 import {
 	moveChosenEslintrc,
-	setEslintRootFalse,
+	setEslintEnvironments,
+	setEslintRoot,
 	setJestOverrideEslint,
 } from "./eslint.js";
 import { createGithubRepo } from "./github.js";
@@ -46,12 +47,12 @@ const after: Options["after"] = async ({
 	packageJson.scripts ??= {};
 
 	try {
-		await moveChosenEslintrc({ packageDir, answers });
+		await moveChosenEslintrc({ packageDir, answers, packageJson });
 	} catch (e) {
 		console.error(`something went wrong when choosing .eslintrc.cjs: \n${e}`);
 	}
 	try {
-		await setEslintRootFalse({ packageDir, answers });
+		await setEslintRoot({ packageDir, answers });
 	} catch (e) {
 		console.error(
 			`something went wrong when changing root status of .eslintrc.cjs: \n${e}`
@@ -62,6 +63,13 @@ const after: Options["after"] = async ({
 	} catch (e) {
 		console.error(
 			`something went wrong when setting the jest override in .eslintrc.cjs: \n${e}`
+		);
+	}
+	try {
+		await setEslintEnvironments({ packageDir, answers });
+	} catch (e) {
+		console.error(
+			`something went wrong when setting your eslint environments in .eslintrc.cjs: \n${e}`
 		);
 	}
 
@@ -79,6 +87,16 @@ const after: Options["after"] = async ({
 	await run(`${packageManager} install`);
 	// This will write those versions the the package.json file
 	await run(`${packageManager} update --save --latest`);
+	try {
+		await createGithubRepo({ answers, packageDir });
+	} catch (e) {
+		console.error(e);
+	}
 
-	await createGithubRepo({ answers, packageDir });
+	// Prettify it!
+	try {
+		await run(`${packageManager} run lint`);
+	} catch (e) {
+		console.error(`Error while running \`${packageManager} run lint\`: ${e}`);
+	}
 };

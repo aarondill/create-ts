@@ -9,6 +9,7 @@ import hasbin from "hasbin";
 import { basename } from "path";
 import { after } from "./after/index.js";
 import {
+	eslintEnvironments,
 	eslintOpinionated,
 	eslintRoot,
 	githubVisibility,
@@ -55,6 +56,7 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 		extra: {
 			eslintOpinionated,
 			eslintRoot,
+			eslintEnvironments,
 			// GH Repo if installed
 			githubVisibility,
 		},
