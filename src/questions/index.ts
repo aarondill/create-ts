@@ -1,2 +1,2 @@
-export { eslintRoot } from "./eslint.js";
-export { githubQuestion } from "./github.js";
+export { eslintOpinionated, eslintRoot } from "./eslint.js";
+export { githubVisibility } from "./github.js";

@@ -8,7 +8,11 @@ import { dedent } from "ts-dedent";
 import hasbin from "hasbin";
 import { basename } from "path";
 import { after } from "./after/index.js";
-import { eslintRoot, githubQuestion } from "./questions/index.js";
+import {
+	eslintOpinionated,
+	eslintRoot,
+	githubVisibility,
+} from "./questions/index.js";
 
 function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
 	// get name from executable: /usr/local/bin/npm --> npm
@@ -49,9 +53,10 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 		promptForPackageManager: true,
 		defaultPackageManager: getDefaultPackageManager(),
 		extra: {
+			eslintOpinionated,
 			eslintRoot,
 			// GH Repo if installed
-			...githubQuestion,
+			githubVisibility,
 		},
 		after,
 		skipNpmInstall: true,

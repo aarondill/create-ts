@@ -9,8 +9,13 @@ import path from "path";
 import sortPackageJson from "sort-package-json";
 // My code
 import { copy } from "create-create-app";
-import { setEslintRootFalse } from "./eslint.js";
+import {
+	moveChosenEslintrc,
+	setEslintRootFalse,
+	setJestOverrideEslint,
+} from "./eslint.js";
 import { createGithubRepo } from "./github.js";
+
 const after: Options["after"] = async ({
 	answers,
 	installNpmPackage,
@@ -27,7 +32,7 @@ const after: Options["after"] = async ({
 		"..",
 		"templates-global"
 	);
-	copy({
+	await copy({
 		sourceDir: globalTemplateDir,
 		targetDir: packageDir,
 		view: { ...answers, year, packageManager },
@@ -40,7 +45,25 @@ const after: Options["after"] = async ({
 
 	packageJson.scripts ??= {};
 
-	if (!answers.eslintRoot) await setEslintRootFalse({ packageDir });
+	try {
+		await moveChosenEslintrc({ packageDir, answers });
+	} catch (e) {
+		console.error(`something went wrong when choosing .eslintrc.cjs: \n${e}`);
+	}
+	try {
+		await setEslintRootFalse({ packageDir, answers });
+	} catch (e) {
+		console.error(
+			`something went wrong when changing root status of .eslintrc.cjs: \n${e}`
+		);
+	}
+	try {
+		await setJestOverrideEslint({ packageDir, answers });
+	} catch (e) {
+		console.error(
+			`something went wrong when setting the jest override in .eslintrc.cjs: \n${e}`
+		);
+	}
 
 	// Sort the package.json
 	const sortedPackageJson = sortPackageJson(packageJson);
