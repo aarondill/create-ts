@@ -19,7 +19,6 @@ import { createGithubRepo } from "./github.js";
 
 const after: Options["after"] = async ({
 	answers,
-	installNpmPackage,
 	packageDir,
 	run,
 	packageManager,
@@ -49,27 +48,35 @@ const after: Options["after"] = async ({
 	try {
 		await moveChosenEslintrc({ packageDir, answers, packageJson });
 	} catch (e) {
-		console.error(`something went wrong when choosing .eslintrc.cjs: \n${e}`);
+		console.error(
+			`something went wrong when choosing .eslintrc.cjs: \n${String(e)}`
+		);
 	}
 	try {
 		await setEslintRoot({ packageDir, answers });
 	} catch (e) {
 		console.error(
-			`something went wrong when changing root status of .eslintrc.cjs: \n${e}`
+			`something went wrong when changing root status of .eslintrc.cjs: \n${String(
+				e
+			)}`
 		);
 	}
 	try {
 		await setJestOverrideEslint({ packageDir, answers });
 	} catch (e) {
 		console.error(
-			`something went wrong when setting the jest override in .eslintrc.cjs: \n${e}`
+			`something went wrong when setting the jest override in .eslintrc.cjs: \n${String(
+				e
+			)}`
 		);
 	}
 	try {
 		await setEslintEnvironments({ packageDir, answers });
 	} catch (e) {
 		console.error(
-			`something went wrong when setting your eslint environments in .eslintrc.cjs: \n${e}`
+			`something went wrong when setting your eslint environments in .eslintrc.cjs: \n${String(
+				e
+			)}`
 		);
 	}
 
@@ -97,6 +104,8 @@ const after: Options["after"] = async ({
 	try {
 		await run(`${packageManager} run lint`);
 	} catch (e) {
-		console.error(`Error while running \`${packageManager} run lint\`: ${e}`);
+		console.error(
+			`Error while running \`${packageManager} run lint\`: ${String(e)}`
+		);
 	}
 };

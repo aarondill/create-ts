@@ -37,7 +37,7 @@ async function setEslintRoot({
 
 	const isRootFalseString = eslintrcString.replace(
 		isRootRegex,
-		`$1const isRoot = ${choice}$2`
+		`$1const isRoot = ${String(choice)}$2`
 	);
 	await fs.writeFile(file, isRootFalseString, "utf-8");
 }
@@ -87,6 +87,7 @@ async function setEslintEnvironments({
 	const matches = commentAndEnv.exec(eslintrcString);
 	const prevString = matches?.[2] ? `${matches?.[2]}` : "{}";
 
+	// eslint-disable-next-line no-eval
 	let objectJSON = eval(`(${prevString})`) as Record<string, boolean>;
 	// If not object, make it one.
 	if (typeof objectJSON !== "object" || Array.isArray(objectJSON)) {

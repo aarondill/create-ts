@@ -16,6 +16,7 @@ const ignorePatterns = ["dist", "**/*.d.ts", "node_modules"];
  * jest, feel free to remove it.
  * @type ConfigOverride
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const jestOverride = {
 	// Jest Stuff! only applies to files in tests folder
 	files: ["tests/**"],

@@ -2,7 +2,7 @@
 // Built-ins
 import { fileURLToPath } from "url";
 // Dependencies
-import type { AfterHookOptions} from "create-create-app";
+import type { AfterHookOptions } from "create-create-app";
 import { create } from "create-create-app";
 import { dedent } from "ts-dedent";
 // My code
