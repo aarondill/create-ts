@@ -18,15 +18,14 @@ import {
 
 function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
 	// get name from executable: /usr/local/bin/npm --> npm
-	const defaultPackageManager =
-		basename(process.env._ ?? "") || "not in the list";
+	const defaultPackageManager = basename(process.env._ ?? "");
 
 	// If called through a package manager
 	if (["pnpm", "npm", "yarn"].includes(defaultPackageManager))
 		return defaultPackageManager as "pnpm" | "npm" | "yarn";
 
 	// Called through node or nodejs
-	if (defaultPackageManager === "node" || defaultPackageManager === "nodejs") {
+	if (["nodejs", "node", "create-ts"].includes(defaultPackageManager)) {
 		if (hasbin.sync("pnpm")) return "pnpm";
 		else if (hasbin.sync("yarn")) return "yarn";
 		return "npm";
