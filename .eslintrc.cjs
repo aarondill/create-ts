@@ -224,7 +224,7 @@ const tsRules = {
 		{
 			allowShortCircuit: true,
 			allowTernary: true,
-                        allowTaggedTemplates: true,
+			allowTaggedTemplates: true,
 		},
 	],
 	"@typescript-eslint/no-unused-vars": "warn",
