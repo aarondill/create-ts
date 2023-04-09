@@ -114,6 +114,9 @@ const after: Options["after"] = async ({
 	});
 
 	console.log(`Installing modules using ${packageManager}`);
+	if (packageManager === "yarn") {
+		await fs.writeFile(path.join(packageDir, "yarn.lock"), "", "utf-8"); // If yarn, make an empty lock file
+	}
 	await run(`${packageManager} install`); // shockingly universal
 
 	try {
