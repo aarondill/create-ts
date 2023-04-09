@@ -38,7 +38,6 @@ const after: Options["after"] = async ({
 	packageManager,
 	templateDir,
 	year,
-	installNpmPackage,
 }) => {
 	// Copy the global template files
 	const globalTemplateDir = path.resolve(
