@@ -16,6 +16,19 @@ import {
 	setJestOverrideEslint,
 } from "./eslint.js";
 import { createGithubRepo } from "./github.js";
+import { setTypeModule } from "./packageJson.js";
+
+async function tryOrLog<P extends any[]>(
+	func: (...args: P) => void | Promise<void>,
+	onFail: (a: unknown) => string,
+	...args: P
+) {
+	try {
+		await func(...args);
+	} catch (e) {
+		console.error(onFail(e));
+	}
+}
 
 const after: Options["after"] = async ({
 	answers,
@@ -45,40 +58,46 @@ const after: Options["after"] = async ({
 
 	packageJson.scripts ??= {};
 
-	try {
-		await moveChosenEslintrc({ packageDir, answers, packageJson });
-	} catch (e) {
-		console.error(
-			`something went wrong when choosing .eslintrc.cjs: \n${String(e)}`
-		);
-	}
-	try {
-		await setEslintRoot({ packageDir, answers });
-	} catch (e) {
-		console.error(
+	await tryOrLog(
+		moveChosenEslintrc,
+		e => `something went wrong when choosing .eslintrc.cjs: \n${String(e)}`,
+		{ packageDir, answers, packageJson }
+	);
+
+	await tryOrLog(
+		setEslintRoot,
+		e =>
 			`something went wrong when changing root status of .eslintrc.cjs: \n${String(
 				e
-			)}`
-		);
-	}
-	try {
-		await setJestOverrideEslint({ packageDir, answers });
-	} catch (e) {
-		console.error(
+			)}`,
+		{ packageDir, answers }
+	);
+	await tryOrLog(
+		setJestOverrideEslint,
+		e =>
 			`something went wrong when setting the jest override in .eslintrc.cjs: \n${String(
 				e
-			)}`
-		);
-	}
-	try {
-		await setEslintEnvironments({ packageDir, answers });
-	} catch (e) {
-		console.error(
-			`something went wrong when setting your eslint environments in .eslintrc.cjs: \n${String(
+			)}`,
+		{ packageDir, answers }
+	);
+
+	await tryOrLog(
+		setEslintEnvironments,
+		e =>
+			`something went wrong setting eslint environments in .eslintrc.cjs:\n${String(
 				e
-			)}`
-		);
-	}
+			)}`,
+		{ packageDir, answers }
+	);
+
+	await tryOrLog(
+		setTypeModule,
+		e =>
+			`something went wrong setting eslint environments in .eslintrc.cjs:\n${String(
+				e
+			)}`,
+		{ packageDir, answers }
+	);
 
 	// Sort the package.json
 	const sortedPackageJson = sortPackageJson(packageJson);

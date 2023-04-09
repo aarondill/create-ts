@@ -1,20 +1,15 @@
 #!/usr/bin/env node
 // Built-ins
+import { basename } from "path";
 import { fileURLToPath } from "url";
 // Dependencies
 import type { AfterHookOptions } from "create-create-app";
 import { create } from "create-create-app";
+import hasbin from "hasbin";
 import { dedent } from "ts-dedent";
 // My code
-import hasbin from "hasbin";
-import { basename } from "path";
 import { after } from "./after/index.js";
-import {
-	eslintEnvironments,
-	eslintOpinionated,
-	eslintRoot,
-	githubVisibility,
-} from "./questions/index.js";
+import { questions } from "./questions/index.js";
 
 function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
 	// get name from executable: /usr/local/bin/npm --> npm
@@ -24,8 +19,10 @@ function getDefaultPackageManager(): "pnpm" | "npm" | "yarn" | undefined {
 	if (["pnpm", "npm", "yarn"].includes(defaultPackageManager))
 		return defaultPackageManager as "pnpm" | "npm" | "yarn";
 
-	// Called through node or nodejs
-	if (["nodejs", "node", "create-ts"].includes(defaultPackageManager)) {
+	// Called through node (nodejs), globally installed, or run in dist folder
+	if (
+		["nodejs", "node", "create-ts", "cli.js"].includes(defaultPackageManager)
+	) {
 		if (hasbin.sync("pnpm")) return "pnpm";
 		else if (hasbin.sync("yarn")) return "yarn";
 		return "npm";
@@ -53,13 +50,7 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 		defaultTemplate: "without-jest",
 		promptForPackageManager: true,
 		defaultPackageManager: getDefaultPackageManager(),
-		extra: {
-			eslintOpinionated,
-			eslintRoot,
-			eslintEnvironments,
-			// GH Repo if installed
-			githubVisibility,
-		},
+		extra: questions,
 		after,
 		skipNpmInstall: true,
 		caveat: ({ answers, packageManager }: Readonly<AfterHookOptions>) => dedent`
