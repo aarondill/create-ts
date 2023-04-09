@@ -13,7 +13,7 @@
 		"templates-global"
 	],
 	"scripts": {
-		"build": "yarpm run lint && yarpm run tsc:build",
+		"build": "yarpm run tsc:build",
 		"clean": "rimraf dist",
 		"lint": "yarpm run lint:eslint && yarpm run lint:prettier && yarpm run sort-package",
 		"lint:eslint": "eslint . --fix --ext .js,.ts,.mjs,.mts,.cjs,.cts,.tsx,.jsx",
