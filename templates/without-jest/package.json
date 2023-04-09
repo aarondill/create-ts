@@ -28,16 +28,16 @@
 		"watch": "yarpm run lint && yarpm run tsc:watch"
 	},
 	"devDependencies": {
-		"@types/node": "*",
-		"@typescript-eslint/eslint-plugin": "*",
-		"@typescript-eslint/parser": "*",
-		"eslint": "*",
-		"prettier": "*",
-		"release-it": "*",
-		"rimraf": "*",
-		"sort-package-json": "*",
-		"typescript": "*",
-		"yarpm": "*"
+		"@types/node": "^0.0.0",
+		"@typescript-eslint/eslint-plugin": "^0.0.0",
+		"@typescript-eslint/parser": "^0.0.0",
+		"eslint": "^0.0.0",
+		"prettier": "^0.0.0",
+		"release-it": "^0.0.0",
+		"rimraf": "^0.0.0",
+		"sort-package-json": "^0.0.0",
+		"typescript": "^0.0.0",
+		"yarpm": "^0.0.0"
 	},
 	"publishConfig": {
 		"access": "public"

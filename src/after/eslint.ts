@@ -150,6 +150,6 @@ async function moveChosenEslintrc({
 	if (chosenName === "opinionated") {
 		// Install eslint-plugin-functional. Version is put when installing
 		packageJson.devDependencies ??= {};
-		packageJson.devDependencies["eslint-plugin-functional"] = "*";
+		packageJson.devDependencies["eslint-plugin-functional"] = "^0.0.0";
 	}
 }

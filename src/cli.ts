@@ -52,7 +52,7 @@ async function main(argv = process.argv.slice(2)): Promise<void> {
 		defaultPackageManager: getDefaultPackageManager(),
 		extra: questions,
 		after,
-		skipNpmInstall: true,
+		skipNpmInstall: true, // I handle this later
 		caveat: ({ answers, packageManager }: Readonly<AfterHookOptions>) => dedent`
 		
 	${

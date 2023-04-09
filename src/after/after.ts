@@ -6,6 +6,7 @@ import type { PackageJson } from "type-fest";
 import fs from "fs/promises";
 import path from "path";
 // Dependencies
+import { run as ncuRun } from "npm-check-updates";
 import sortPackageJson from "sort-package-json";
 // My code
 import { copy } from "create-create-app";
@@ -37,6 +38,7 @@ const after: Options["after"] = async ({
 	packageManager,
 	templateDir,
 	year,
+	installNpmPackage,
 }) => {
 	// Copy the global template files
 	const globalTemplateDir = path.resolve(
@@ -60,42 +62,38 @@ const after: Options["after"] = async ({
 
 	await tryOrLog(
 		moveChosenEslintrc,
-		e => `something went wrong when choosing .eslintrc.cjs: \n${String(e)}`,
+		e => `Something went wrong when choosing .eslintrc.cjs: \n` + String(e),
 		{ packageDir, answers, packageJson }
 	);
 
 	await tryOrLog(
 		setEslintRoot,
 		e =>
-			`something went wrong when changing root status of .eslintrc.cjs: \n${String(
-				e
-			)}`,
+			`Something went wrong when changing root status of .eslintrc.cjs: \n` +
+			String(e),
 		{ packageDir, answers }
 	);
 	await tryOrLog(
 		setJestOverrideEslint,
 		e =>
-			`something went wrong when setting the jest override in .eslintrc.cjs: \n${String(
-				e
-			)}`,
+			`Something went wrong when setting the jest override in .eslintrc.cjs: \n` +
+			String(e),
 		{ packageDir, answers }
 	);
 
 	await tryOrLog(
 		setEslintEnvironments,
 		e =>
-			`something went wrong setting eslint environments in .eslintrc.cjs:\n${String(
-				e
-			)}`,
+			`Something went wrong setting eslint environments in .eslintrc.cjs:\n` +
+			String(e),
 		{ packageDir, answers }
 	);
 
 	await tryOrLog(
 		setTypeModule,
 		e =>
-			`something went wrong setting eslint environments in .eslintrc.cjs:\n${String(
-				e
-			)}`,
+			`Something went wrong setting type: modules in package.json:\n` +
+			String(e),
 		{ packageDir, answers }
 	);
 
@@ -107,12 +105,17 @@ const after: Options["after"] = async ({
 	// Write the package.json
 	await fs.writeFile(packageJsonPath, packageJsonString);
 
-	console.log(`Updating packages using ${packageManager}`);
+	console.log(`Updating modules using ncu`);
 
-	// This should update latest versions of everything
-	await run(`${packageManager} install`);
-	// This will write those versions the the package.json file
-	await run(`${packageManager} update --save --latest`);
+	// Save latest versions of all modules to package.json
+	await ncuRun({
+		packageFile: packageJsonPath,
+		upgrade: true,
+	});
+
+	console.log(`Installing modules using ${packageManager}`);
+	await run(`${packageManager} install`); // shockingly universal
+
 	try {
 		await createGithubRepo({ answers, packageDir });
 	} catch (e) {
