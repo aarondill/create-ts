@@ -146,10 +146,4 @@ async function moveChosenEslintrc({
 
 	const destination = path.resolve(packageDir, ".eslintrc.cjs");
 	await fs.rename(chosenFile, destination);
-
-	if (chosenName === "opinionated") {
-		// Install eslint-plugin-functional. Version is put when installing
-		packageJson.devDependencies ??= {};
-		packageJson.devDependencies["eslint-plugin-functional"] = "^0.0.0";
-	}
 }
