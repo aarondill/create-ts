@@ -1,8 +1,8 @@
 // this is the opinionated eslint configuration
-/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Linter.d").Linter.Config} EslintConfig */
-/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Linter.d").Linter.Config["ignorePatterns"]} EslintIgnorePatterns */
-/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Linter.d").Linter.RulesRecord} EslintRules */
-/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Linter.d").Linter.ConfigOverride} ConfigOverride */
+/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Config").ClassicConfig.Config} EslintConfig */
+/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Config").ClassicConfig.Config["ignorePatterns"]} EslintIgnorePatterns */
+/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Config").SharedConfig.RulesRecord} EslintRules */
+/** @typedef {import("@typescript-eslint/utils/dist/ts-eslint/Config").ClassicConfig.ConfigOverride} ConfigOverride */
 
 /** @type {boolean} */
 //! This is a comment marker which will be removed during creation. (This must be constant. Don't change the name!)
