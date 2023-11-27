@@ -160,6 +160,11 @@ const tsRules = {
 	"@typescript-eslint/naming-convention": [
 		"warn",
 		{
+			// Allow any format for imports (default and namespace)
+			format: null,
+			selector: "import",
+		},
+		{
 			format: null,
 			leadingUnderscore: "allow",
 			modifiers: ["requiresQuotes"],
